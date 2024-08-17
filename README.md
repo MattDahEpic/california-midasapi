@@ -14,7 +14,7 @@ You should see `User account for username was successfully created. A verificati
 
 2. Create a `Midas` object:
 ```python
-from midas.Midas import Midas
+from midas import Midas
 midas = Midas("username", "password")
 ```
 
