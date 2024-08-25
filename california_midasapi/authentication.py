@@ -1,7 +1,7 @@
 import requests
 import json
 import base64
-from midas.internal import Midas as Internal
+from .internal import Midas as Internal
 
 class Midas(Internal):
     def __init__(self, username: str, password: str):

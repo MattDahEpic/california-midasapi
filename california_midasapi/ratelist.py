@@ -1,5 +1,5 @@
-from midas.internal import Midas as Internal
-from midas.types import RateListItem, ValueInfoItem, RateInfo
+from .internal import Midas as Internal
+from .types import RateListItem, ValueInfoItem, RateInfo
 from typing import Literal
 from enum import Enum
 import json
