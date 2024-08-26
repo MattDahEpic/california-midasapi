@@ -1,10 +1,10 @@
-class MidasClientError(Exception):
+class MidasException(Exception):
     """Exception to indicate a general API error."""
 
 
-class MidasCommunicationError(MidasClientError):
+class MidasCommunicationException(MidasException):
     """Exception to indicate a communication error."""
 
 
-class MidasAuthenticationError(MidasClientError):
+class MidasAuthenticationException(MidasException):
     """Exception to indicate an authentication error."""

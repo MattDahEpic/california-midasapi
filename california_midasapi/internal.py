@@ -4,7 +4,7 @@ import base64
 import jwt
 import time
 
-from .exception import MidasAuthenticationError
+from .exception import MidasAuthenticationException
 
 class Midas():
     def __request(self, method: Literal['GET', 'POST'], url: str):
@@ -34,7 +34,7 @@ class Midas():
         response = requests.get(url,headers=headers)
 
         if (not response.ok):
-            raise MidasAuthenticationError(response.text)
+            raise MidasAuthenticationException(response.text)
 
         self.auth_token = response.headers['Token']
     
