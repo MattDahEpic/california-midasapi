@@ -14,6 +14,10 @@ class Midas(Internal):
         self.password = password
         self.auth_token: str = None
     
+    def test_credentials(self) -> bool:
+        """Test the provided credentials. Throws if invalid or expired."""
+        self.__loginAndStore(self.username, self.password)
+    
     @staticmethod
     def register(username: str, password: str, email: str, fullname: str, organization: str = None) -> str:
         """
@@ -46,4 +50,5 @@ class Midas(Internal):
         print(response)
         #Response text should be: 'User account for your_user_name was successfully created. A verification email has been sent to your_email. Please click the link in the email in order to start using the API.'
         print(response.text)
+        return response.text
 

@@ -4,6 +4,8 @@ import base64
 import jwt
 import time
 
+from .exception import MidasAuthenticationError
+
 class Midas():
     def __request(self, method: Literal['GET', 'POST'], url: str):
         """Preform a request with the stored auth token and return the body."""
@@ -30,6 +32,9 @@ class Midas():
         url = 'https://midasapi.energy.ca.gov/api/token'
 
         response = requests.get(url,headers=headers)
+
+        if (not response.ok):
+            raise MidasAuthenticationError(response.text)
 
         self.auth_token = response.headers['Token']
     
