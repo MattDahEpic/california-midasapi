@@ -52,9 +52,12 @@ class RateInfo:
     ValueInformation: list[ValueInfoItem] = field(default_factory=list)
     """The list of tariffs"""
 
+    def GetActiveTariffs(self, time: datetime) -> list[ValueInfoItem]:
+        """Gets all tariffs that are active at the specified time."""
+        timestamp = time.timestamp()
+        return list(filter(lambda t: t.GetStart().timestamp() < timestamp and t.GetEnd().timestamp() > timestamp, self.ValueInformation))
+
     def GetCurrentTariffs(self) -> list[ValueInfoItem]:
-        """Gets all tariffs that are currently active"""
+        """Gets all tariffs that are currently active."""
+        return self.GetActiveTariffs(datetime.now())
         
-        # ValueInformation where getstart < now < getend
-        now = datetime.now().timestamp()
-        return list(filter(lambda t: t.GetStart().timestamp() < now and t.GetEnd().timestamp() > now, self.ValueInformation))
