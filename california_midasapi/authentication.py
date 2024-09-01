@@ -1,6 +1,8 @@
 import requests
 import json
 import base64
+
+from .exception import MidasRegistrationException
 from .internal import Midas as Internal
 
 class Midas(Internal):
@@ -46,9 +48,8 @@ class Midas(Internal):
 
         response = requests.post(url, data=json.dumps(registration_info), headers=headers)
 
-        #Prints below will return 200 response for successful call
-        print(response)
-        #Response text should be: 'User account for your_user_name was successfully created. A verification email has been sent to your_email. Please click the link in the email in order to start using the API.'
-        print(response.text)
+        if not response.ok:
+            raise MidasRegistrationException(response.text)
+
         return response.text
 

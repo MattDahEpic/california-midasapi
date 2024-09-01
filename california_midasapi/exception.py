@@ -8,3 +8,7 @@ class MidasCommunicationException(MidasException):
 
 class MidasAuthenticationException(MidasException):
     """Exception to indicate an authentication error."""
+
+
+class MidasRegistrationException(MidasException):
+    """Exception to indicate a registration error."""
