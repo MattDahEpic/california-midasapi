@@ -26,14 +26,14 @@ class ValueInfoItem:
     def GetStart(self) -> datetime:
         """Get the start of this tariff as a python datetime"""
         if self.__startDateTime is None:
-            self.__startDateTime = parser.parse(f"{self.DateStart} {self.TimeStart} -07:00")
+            self.__startDateTime = parser.parse(f"{self.DateStart} {self.TimeStart}Z")
         return self.__startDateTime
 
     __endDateTime = None
     def GetEnd(self) -> datetime:
         """Get the end of this tariff as a python datetime"""
         if self.__endDateTime is None:
-            self.__endDateTime = parser.parse(f"{self.DateEnd} {self.TimeEnd} -07:00")
+            self.__endDateTime = parser.parse(f"{self.DateEnd} {self.TimeEnd}Z")
         return self.__endDateTime
 
 @dataclass
