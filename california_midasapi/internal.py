@@ -4,7 +4,7 @@ import base64
 import jwt
 import time
 
-from .exception import MidasAuthenticationException
+from .exception import MidasAuthenticationException, MidasException
 
 class Midas():
     def __request(self, method: Literal['GET', 'POST'], url: str):
@@ -18,7 +18,7 @@ class Midas():
         }
         response = requests.request(method, url, headers=headers)
         if (not response.ok):
-            raise f"Error preforming request: {response.status_code} {response.text}"
+            raise MidasException(f"Error preforming request: {response.status_code} {response.text}")
         return response.text
     
     def __loginAndStore(self, username: str, password: str):
