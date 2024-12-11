@@ -32,15 +32,14 @@ class ValueInfoItem:
     __endDateTime = None
     def GetEnd(self) -> datetime:
         """Get the end of this tariff as a python datetime"""
-        startDate = parser.parse(self.DateStart)
-        endDate = parser.parse(self.DateEnd)
-
         if self.__endDateTime is None:
             self.__endDateTime = parser.parse(f"{self.DateEnd} {self.TimeEnd}Z")
 
-        """Correct end dates that incorrectly cross over into next day"""
-        if endDate - startDate <= timedelta(days=1) and self.DayStart == self.DayEnd:
-            self.__endDateTime = parser.parse(f"{self.DateStart} {self.TimeEnd}Z")
+            """Correct end dates that incorrectly cross over into next day (#1)"""
+            startDate = parser.parse(self.DateStart)
+            endDate = parser.parse(self.DateEnd)
+            if endDate - startDate == timedelta(days=1) and self.DayStart == self.DayEnd:
+                self.__endDateTime = parser.parse(f"{self.DateStart} {self.TimeEnd}Z")
 
         return self.__endDateTime
 
