@@ -1,6 +1,7 @@
-from .internal import Midas as Internal
+from .exception import MidasDecodingException
+from .internal import MidasInternal
 from .types import RateListItem, ValueInfoItem, RateInfo
-from typing import Literal
+from typing import Any, Literal
 from enum import Enum
 import json
 
@@ -11,18 +12,18 @@ class RINFilter(Enum):
         GHG_EMISSION = 2
         FLEX_ALERT = 3
 
-class Midas(Internal):
+class Midas(MidasInternal):
 
     async def GetAvailableRates(self, signaltype: RINFilter) -> 'list[RateListItem]':
         """
         Get all the available rates.
         """
 
-        def __rateListItemHook(dict):
+        def __rateListItemHook(dict: dict[Any, Any]):
              return RateListItem(**dict)
 
         url = 'https://midasapi.energy.ca.gov/api/valuedata?signaltype=' + str(signaltype.value)
-        response = await self.__request('GET', url)
+        response = await self._request('GET', url)
         return (json.loads(response, object_hook=__rateListItemHook))
     
     async def GetRateInfo(self, rateID: str, queryType: Literal['alldata', 'realtime'] = 'alldata') -> RateInfo:
@@ -30,17 +31,17 @@ class Midas(Internal):
         Returns data about a given a rate.
         """
 
-        def __rateInfoObjectHook(dict):
+        def __rateInfoObjectHook(dict: dict[Any, Any]):
             # this has to handle both the parent object and its children
             if "DateStart" in dict:
                 return ValueInfoItem(**dict)
             elif "RateID" in dict:
                 return RateInfo(**dict)
             else:
-                raise "Invalid object type for __rateInfoObjectHook"
+                raise MidasDecodingException("Invalid object type for __rateInfoObjectHook")
             
         # TODO what does queryType=realtime even do? all properties are None
         url = 'https://midasapi.energy.ca.gov/api/valuedata?id=' + rateID + '&querytype=' + queryType
-        pricing_response = await self.__request('GET', url)
+        pricing_response = await self._request('GET', url)
 
         return (json.loads(pricing_response, object_hook=__rateInfoObjectHook))

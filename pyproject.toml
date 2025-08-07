@@ -25,4 +25,9 @@ dependencies = [
     "python-dateutil",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "cryptography>=3.4.0",
+]
+
 [tool.setuptools_scm]

@@ -12,3 +12,7 @@ class MidasAuthenticationException(MidasException):
 
 class MidasRegistrationException(MidasException):
     """Exception to indicate a registration error."""
+
+
+class MidasDecodingException(MidasException):
+    """Exception to indicate a failure to decode data retreived from the server. Please raise an issue!"""

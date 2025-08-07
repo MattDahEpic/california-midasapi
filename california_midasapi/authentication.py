@@ -3,26 +3,16 @@ import json
 import base64
 
 from .exception import MidasRegistrationException
-from .internal import Midas as Internal
+from .internal import MidasInternal
 
-class Midas(Internal):
-    def __init__(self, session: ClientSession, username: str, password: str):
-        """
-        Create a new API wrapper instance using the given credentials.
+class Midas(MidasInternal):
 
-        Credentials are required, if you don't have an account use the static `register` method
-        """
-        self.username = username
-        self.password = password
-        self.session = session
-        self.auth_token: str = None
-    
     async def test_credentials(self) -> bool:
         """Test the provided credentials. Throws if invalid or expired."""
-        await self.__loginAndStore(self.username, self.password)
+        return await self._test_credentials()
     
     @staticmethod
-    async def register(session: ClientSession, username: str, password: str, email: str, fullname: str, organization: str = None) -> str:
+    async def register(session: ClientSession, username: str, password: str, email: str, fullname: str, organization: str | None = None) -> str:
         """
         Create a new account with the MIDAS server.
         """
@@ -50,5 +40,5 @@ class Midas(Internal):
         if not response.ok:
             raise MidasRegistrationException(response.text)
 
-        return response.text
+        return await response.text()
 
