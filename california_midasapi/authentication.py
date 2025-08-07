@@ -1,4 +1,4 @@
-import requests
+from aiohttp import ClientSession
 import json
 import base64
 
@@ -6,7 +6,7 @@ from .exception import MidasRegistrationException
 from .internal import Midas as Internal
 
 class Midas(Internal):
-    def __init__(self, username: str, password: str):
+    def __init__(self, session: ClientSession, username: str, password: str):
         """
         Create a new API wrapper instance using the given credentials.
 
@@ -14,18 +14,17 @@ class Midas(Internal):
         """
         self.username = username
         self.password = password
+        self.session = session
         self.auth_token: str = None
     
-    def test_credentials(self) -> bool:
+    async def test_credentials(self) -> bool:
         """Test the provided credentials. Throws if invalid or expired."""
-        self.__loginAndStore(self.username, self.password)
+        await self.__loginAndStore(self.username, self.password)
     
     @staticmethod
-    def register(username: str, password: str, email: str, fullname: str, organization: str = None) -> str:
+    async def register(session: ClientSession, username: str, password: str, email: str, fullname: str, organization: str = None) -> str:
         """
         Create a new account with the MIDAS server.
-
-        
         """
         username64 = str(base64.b64encode(username.encode("utf-8")), "utf-8")
         password64 = str(base64.b64encode(password.encode("utf-8")), "utf-8")
@@ -46,7 +45,7 @@ class Midas(Internal):
         url = 'https://midasapi.energy.ca.gov/api/registration'
         headers =  {"Content-Type":"application/json"}
 
-        response = requests.post(url, data=json.dumps(registration_info), headers=headers)
+        response = await session.post(url, data=json.dumps(registration_info), headers=headers)
 
         if not response.ok:
             raise MidasRegistrationException(response.text)

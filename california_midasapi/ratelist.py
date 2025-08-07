@@ -13,7 +13,7 @@ class RINFilter(Enum):
 
 class Midas(Internal):
 
-    def GetAvailableRates(self, signaltype: RINFilter) -> 'list[RateListItem]':
+    async def GetAvailableRates(self, signaltype: RINFilter) -> 'list[RateListItem]':
         """
         Get all the available rates.
         """
@@ -22,10 +22,10 @@ class Midas(Internal):
              return RateListItem(**dict)
 
         url = 'https://midasapi.energy.ca.gov/api/valuedata?signaltype=' + str(signaltype.value)
-        response = self.__request('GET', url)
+        response = await self.__request('GET', url)
         return (json.loads(response, object_hook=__rateListItemHook))
     
-    def GetRateInfo(self, rateID: str, queryType: Literal['alldata', 'realtime'] = 'alldata') -> RateInfo:
+    async def GetRateInfo(self, rateID: str, queryType: Literal['alldata', 'realtime'] = 'alldata') -> RateInfo:
         """
         Returns data about a given a rate.
         """
@@ -41,6 +41,6 @@ class Midas(Internal):
             
         # TODO what does queryType=realtime even do? all properties are None
         url = 'https://midasapi.energy.ca.gov/api/valuedata?id=' + rateID + '&querytype=' + queryType
-        pricing_response = self.__request('GET', url)
+        pricing_response = await self.__request('GET', url)
 
         return (json.loads(pricing_response, object_hook=__rateInfoObjectHook))
