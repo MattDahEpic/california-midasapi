@@ -43,6 +43,6 @@ More info about MIDAS can be found at https://midasapi.energy.ca.gov/
 Thank you to the CEC for providing example code at https://github.com/morganmshep/MIDAS-Python-Repository
 
 ## Projects using this library
-
+[ha-midas](https://github.com/MattDahEpic/ha-midas): A Home Assistant integration to expose MIDAS rate data to your smart home
 
 If you have a project using this library, we'd love to hear about it! Let us know and we'll add it to this list.
