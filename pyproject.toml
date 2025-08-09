@@ -10,13 +10,12 @@ readme = "README.md"
 authors = [
     { name = "MattDahEpic", email = "matt+california-midasapipypi@mattdahepic.com" },
 ]
-license = {text = "MIT"}
+license = "MIT"
 keywords = ["california", "api", "energy", "midas", "price"]
 classifiers = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
     'Topic :: Scientific/Engineering',
-    'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3',
 ]
 dependencies = [
@@ -24,6 +23,10 @@ dependencies = [
     "PyJWT",
     "python-dateutil",
 ]
+
+[project.urls]
+source = "https://github.com/MattDahEpic/california-midasapi"
+issues = "https://github.com/MattDahEpic/california-midasapi/issues"
 
 [project.optional-dependencies]
 dev = [

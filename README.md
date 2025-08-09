@@ -1,6 +1,6 @@
 # california-midasapi
 A Python wrapper for the California Energy Comission (CEC)'s Market Informed Demand Automation Server (MIDAS) energy price API.  
-This API lets you get info about energy prices in California from utilities regulated by the CEC, which is all the big ones (PG&E, SCE, SDG&E, SMUD, etc.) and some smaller municipal utilities. If you have a Rate Identification Number (RIN) QA Code on your electric bill you can use this API to get your electricity price in real time.
+This API lets you get info about energy prices in California from utilities regulated by the CEC, which is all the big ones (PG&E, SCE, SDG&E, SMUD, etc.) and some smaller municipal utilities. If you have a Rate Identification Number (RIN) QR Code on your electric bill you can use this API to get your electricity price in real time.
 
 
 ## Usage
