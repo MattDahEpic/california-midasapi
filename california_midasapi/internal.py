@@ -34,7 +34,7 @@ class MidasInternal():
         response = await self.__session.request(method, url, headers=headers)
         #TODO throw better exceptions here, maybe even retry on 401 before fully throwing
         if (not response.ok):
-            raise MidasException(f"Error preforming request: {response.status} {response.text}")
+            raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
         return await response.text()
     
     async def _test_credentials(self) -> bool:
