@@ -37,7 +37,7 @@ class Midas(MidasInternal):
 
         response = await session.post(url, data=json.dumps(registration_info), headers=headers)
 
-        if not response.ok:
+        if (not response.status == 200):
             raise MidasRegistrationException(await response.text())
 
         return await response.text()
