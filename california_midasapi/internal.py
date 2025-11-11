@@ -33,7 +33,7 @@ class MidasInternal():
         }
         response = await self.__session.request(method, url, headers=headers)
         #TODO throw better exceptions here, maybe even retry on 401 before fully throwing
-        if (not response.ok):
+        if (not response.status == 200):
             raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
         return await response.text()
     
@@ -51,7 +51,7 @@ class MidasInternal():
 
         response = await self.__session.get(url, auth=auth)
 
-        if (not response.ok):
+        if (not response.status == 200):
             raise MidasAuthenticationException(await response.text())
 
         self.__auth_token = response.headers['Token']
