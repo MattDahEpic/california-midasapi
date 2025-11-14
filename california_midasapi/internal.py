@@ -1,9 +1,9 @@
 from typing import Literal, cast
-from aiohttp import ClientSession, BasicAuth
+from aiohttp import ClientError, ClientSession, BasicAuth
 import jwt
 import time
 
-from .exception import MidasAuthenticationException, MidasException
+from .exception import MidasAuthenticationException, MidasCommunicationException, MidasException
 
 class MidasInternal():
     """Internal Methods and State used by MIDAS functionality"""
@@ -49,12 +49,15 @@ class MidasInternal():
         auth = BasicAuth(username, password)
         url = 'https://midasapi.energy.ca.gov/api/token'
 
-        response = await self.__session.get(url, auth=auth)
+        try: 
+            response = await self.__session.get(url, auth=auth)
 
-        if (not response.status == 200):
-            raise MidasAuthenticationException(await response.text())
+            if (not response.status == 200):
+                raise MidasAuthenticationException(await response.text())
 
-        self.__auth_token = response.headers['Token']
+            self.__auth_token = response.headers['Token']
+        except ClientError:
+            raise MidasCommunicationException()
     
     @staticmethod
     def __isTokenValid(token: str) -> bool:
