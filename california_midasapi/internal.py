@@ -31,11 +31,15 @@ class MidasInternal():
             'User-Agent': 'california-midasapi.py',
             'Authorization': "Bearer " + cast(str, self.__auth_token),
         }
-        response = await self.__session.request(method, url, headers=headers)
-        #TODO throw better exceptions here, maybe even retry on 401 before fully throwing
-        if (not response.status == 200):
-            raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
-        return await response.text()
+
+        try:
+            response = await self.__session.request(method, url, headers=headers)
+            #TODO retry on 401 before fully throwing
+            if (not response.status == 200):
+                raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
+            return await response.text()
+        except ClientError as exception:
+            raise MidasCommunicationException("Connection error occurred while attempting to reach the MIDAS server.") from exception
     
     async def _test_credentials(self) -> bool:
         """Confirm the current stored username and password can issue a token. Throws if unsuccessful."""
@@ -56,8 +60,8 @@ class MidasInternal():
                 raise MidasAuthenticationException(await response.text())
 
             self.__auth_token = response.headers['Token']
-        except ClientError:
-            raise MidasCommunicationException()
+        except ClientError as exception:
+            raise MidasCommunicationException("Connection error occurred while attempting to reach the MIDAS server.") from exception
     
     @staticmethod
     def __isTokenValid(token: str) -> bool:
