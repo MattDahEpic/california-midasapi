@@ -1,3 +1,4 @@
+from datetime import datetime
 from .exception import MidasDecodingException
 from .internal import MidasInternal
 from .types import RateListItem, ValueInfoItem, RateInfo
@@ -28,7 +29,7 @@ class Midas(MidasInternal):
     
     async def GetRateInfo(self, rateID: str, queryType: Literal['alldata', 'realtime'] = 'alldata') -> RateInfo:
         """
-        Returns data about a given a rate.
+        Returns data about a given rate.
         """
 
         def __rateInfoObjectHook(dict: dict[Any, Any]):
@@ -42,6 +43,25 @@ class Midas(MidasInternal):
             
         # TODO what does queryType=realtime even do? all properties are None
         url = 'https://midasapi.energy.ca.gov/api/valuedata?id=' + rateID + '&querytype=' + queryType
+        pricing_response = await self._request('GET', url)
+
+        return (json.loads(pricing_response, object_hook=__rateInfoObjectHook))
+    
+    async def GetHistoricalRateInfo(self, rateID: str, startDate: datetime, endDate: datetime) -> RateInfo:
+        """
+        Returns historical data about a given rate during the specified time period.
+        """
+
+        def __rateInfoObjectHook(dict: dict[Any, Any]):
+            # this has to handle both the parent object and its children
+            if "DateStart" in dict:
+                return ValueInfoItem(**dict)
+            elif "RateID" in dict:
+                return RateInfo(**dict)
+            else:
+                raise MidasDecodingException("Invalid object type for __rateInfoObjectHook")
+            
+        url = 'https://midasapi.energy.ca.gov/api/historicaldata/' + rateID + '?startdate=' + startDate.strftime("%Y-%m-%d") + '&enddate=' + endDate.strftime("%Y-%m-%d")
         pricing_response = await self._request('GET', url)
 
         return (json.loads(pricing_response, object_hook=__rateInfoObjectHook))
