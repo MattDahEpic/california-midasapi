@@ -19,13 +19,17 @@ class Midas(MidasInternal):
         """
         Get all the available rates.
         """
-
-        def __rateListItemHook(dict: dict[Any, Any]):
-             return RateListItem(**dict)
-
         url = 'https://midasapi.energy.ca.gov/api/valuedata?signaltype=' + str(signaltype.value)
         response = await self._request('GET', url)
-        return (json.loads(response, object_hook=__rateListItemHook))
+        parsed = json.loads(response)
+
+        # v2.0 returns {"Rates": [...]}, v1.0 returned bare array
+        if isinstance(parsed, dict):
+            items = next(iter(parsed.values()))
+        else:
+            items = parsed
+
+        return [RateListItem(**item) for item in items]
     
     async def GetRateInfo(self, rateID: str, queryType: Literal['alldata', 'realtime'] = 'alldata') -> RateInfo:
         """

@@ -27,4 +27,13 @@ dependencies = [
 source = "https://github.com/MattDahEpic/california-midasapi"
 issues = "https://github.com/MattDahEpic/california-midasapi/issues"
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+]
+
+[tool.pytest.ini_options]
+markers = ["live: hits the real MIDAS API (skip with --no-live)"]
+
 [tool.setuptools_scm]

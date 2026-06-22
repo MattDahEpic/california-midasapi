@@ -15,8 +15,8 @@ class ValueInfoItem:
     ValueName: str
     DateStart: str
     DateEnd: str
-    DayStart: str
-    DayEnd: str
+    DayStart: str | int
+    DayEnd: str | int
     TimeStart: str
     TimeEnd: str
     Value: float
