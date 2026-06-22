@@ -19,7 +19,7 @@ class ValueInfoItem:
     DayEnd: str
     TimeStart: str
     TimeEnd: str
-    value: float
+    Value: float
     Unit: str
 
     __startDateTime = None
@@ -55,6 +55,8 @@ class RateInfo:
     EndUse: str
     AltRateName1: str
     AltRateName2: str
+    SignalType: str
+    Description: str
     SignupCloseDate: str
     ValueInformation: list[ValueInfoItem] = field(default_factory=list)
     """The list of tariffs"""
