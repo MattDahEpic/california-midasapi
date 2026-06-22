@@ -1,3 +1,3 @@
-from .Midas import Midas, MidasAuth, MidasRateList
+from .Midas import Midas, MidasRateList
 
-__all__ = [Midas, MidasAuth, MidasRateList]
+__all__ = [Midas, MidasRateList]
