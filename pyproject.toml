@@ -20,17 +20,11 @@ classifiers = [
 ]
 dependencies = [
     "aiohttp",
-    "PyJWT",
     "python-dateutil",
 ]
 
 [project.urls]
 source = "https://github.com/MattDahEpic/california-midasapi"
 issues = "https://github.com/MattDahEpic/california-midasapi/issues"
-
-[project.optional-dependencies]
-dev = [
-    "cryptography>=3.4.0",
-]
 
 [tool.setuptools_scm]

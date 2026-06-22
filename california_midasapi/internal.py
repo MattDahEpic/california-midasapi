@@ -1,9 +1,7 @@
-from typing import Literal, cast
-from aiohttp import ClientError, ClientSession, BasicAuth
-import jwt
-import time
+from typing import Literal
+from aiohttp import ClientError, ClientSession
 
-from .exception import MidasAuthenticationException, MidasCommunicationException, MidasException
+from .exception import MidasCommunicationException, MidasException
 
 class MidasInternal():
     """Internal Methods and State used by MIDAS functionality"""

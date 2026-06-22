@@ -4,22 +4,16 @@ This API lets you get info about energy prices in California from utilities regu
 
 
 ## Usage
-1. Start by registering an account with MIDAS. There is no webpage for this so I have provided a helper. You only have to register an account once.
+1. Create a `Midas` object:
 ```python
 from california_midasapi import Midas
-response = Midas.register("username", "password", "email@email.email", "Full Name")
-print(response)
-```
-You should see `User account for username was successfully created. A verification email has been sent to email@email.email. Please click the link in the email in order to start using the API.`.  
-Click the link in the email, then you can use the rest of the API as described below.
 
-2. Create a `Midas` object:
-```python
-from california_midasapi import Midas
-midas = Midas("username", "password")
+async with aiohttp.ClientSession() as session:
+    midas = Midas(session)
+asyncio.run(main())
 ```
 
-3. Access the API methods using this object:
+2. Access the API methods using this object:
 ```python
 # Get basic info about all rates
 from california_midasapi.ratelist import RINFilter
