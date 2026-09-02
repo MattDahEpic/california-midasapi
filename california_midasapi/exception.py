@@ -6,6 +6,10 @@ class MidasCommunicationException(MidasException):
     """Exception to indicate a communication error."""
 
 
+class MidasNotFoundException(MidasException):
+    """Exception to indicate the requested data does not exist (HTTP 404)."""
+
+
 class MidasAuthenticationException(MidasException):
     """Exception to indicate an authentication error."""
 
