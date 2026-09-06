@@ -23,5 +23,5 @@ class MidasInternal():
             if (not response.status == 200):
                 raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
             return await response.text()
-        except ClientError as exception:
+        except (ClientError, ConnectionError) as exception:
             raise MidasCommunicationException("Connection error occurred while attempting to reach the MIDAS server.") from exception
