@@ -1,7 +1,7 @@
 from typing import Literal
 from aiohttp import ClientError, ClientSession
 
-from .exception import MidasCommunicationException, MidasException
+from .exception import MidasCommunicationException, MidasException, MidasNotFoundException
 
 class MidasInternal():
     """Internal Methods and State used by MIDAS functionality"""
@@ -14,10 +14,12 @@ class MidasInternal():
         self.__session = session
 
     async def _request(self, method: Literal['GET', 'POST'], url: str):
-        """Preform a request with the stored auth token and return the body."""
+        """Preform a request and return the body."""
         try:
             response = await self.__session.request(method, url)
             #TODO retry on 401 before fully throwing
+            if response.status == 404:
+                raise MidasNotFoundException(f"Requested data not found: {response.status} {await response.text()}")
             if (not response.status == 200):
                 raise MidasException(f"Error preforming request: {response.status} {await response.text()}")
             return await response.text()
